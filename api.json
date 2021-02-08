@@ -1,0 +1,171 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Address lookup api",
+    "description": ""
+  },
+  "host": "localhost",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/group/lookups/address-lookup": {
+      "get": {
+        "summary": "Returns a list of addresses based on search criteria",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "postcode",
+            "in": "query",
+            "description": "postcode.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "premises",
+            "in": "query",
+            "description": "restrict on premises (house number)",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "400": {
+            "description": "The request was invalid or cannot be otherwise served.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication credentials were missing or incorrect.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "404": {
+            "description": "The URI requested is invalid or the resource requested does not exist.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "500": {
+            "description": "A server error was encountered during a downstream call by the API.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "response": {
+      "properties": {
+        "_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/address"
+          }
+        }
+      }
+    },
+    "address": {
+      "properties": {
+        "addressLine1": {
+          "type": "string"
+        },
+        "addressLine2": {
+          "type": "string"
+        },
+        "addressLine3": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "postcodeDeliveryPointSuffix": {
+          "type": "string"
+        },
+        "singleLineAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "errorResponse": {
+      "type": "object",
+      "required": [
+        "errorId",
+        "errorMsg",
+        "errorCode",
+        "errorType",
+        "contextInfo"
+      ],
+      "properties": {
+        "errorId": {
+          "type": "string",
+          "description": "Error ID.",
+          "example": 123456789
+        },
+        "errorMsg": {
+          "type": "string",
+          "description": "Error Message",
+          "example": "error"
+        },
+        "errorCode": {
+          "type": "string",
+          "description": "Error Message",
+          "example": "TIB-NO-SUCH-CUSTOMER-xx1"
+        },
+        "errorType": {
+          "type": "string",
+          "description": "Type of error (Technical | Business)",
+          "example": "Technical"
+        },
+        "contextInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/contextInfo"
+          }
+        }
+      }
+    },
+    "contextInfo": {
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "name of the context attribute.",
+          "example": "filename"
+        },
+        "value": {
+          "type": "string",
+          "description": "value of context attribute.",
+          "example": "c:\\files\\file1.txt"
+        }
+      }
+    }
+  }
+}

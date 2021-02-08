@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: group-lookups-ingress
+  namespace: group-lookups
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: address-lookup-api
+          servicePort: 80
+        path: /address-lookup-api(/|$)(.*)
+      - backend:
+          serviceName: address-lookup-api
+          servicePort: 80
+        path: /(.*)

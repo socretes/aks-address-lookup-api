@@ -1,0 +1,42 @@
+{
+  "name": "address-lookup-api",
+  "version": "1.0.1",
+  "description": "",
+  "config": {
+    "integration-resource-group": "rg-integration",
+    "integration-container-registry": "rlintegrationservices",
+    "version-tag": "v1"
+  },
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "az-login": "az login",
+    "az-integration-acr-create": "az acr create -g %npm_package_config_integration_resource_group% -n %npm_package_config_integration_container_registry% --sku Basic --location uksouth",
+    "az-integration-acr-delete": "az acr delete -g %npm_package_config_integration_resource_group% -n %npm_package_config_integration_container_registry%",
+    "docker-image-tag": "docker tag %npm_package_name%:%npm_package_config_version_tag% %npm_package_config_integration_container_registry%.azurecr.io/%npm_package_name%:%npm_package_config_version_tag%",
+    "docker-push-prod": "docker push %npm_package_config_integration_container_registry%.azurecr.io/%npm_package_name%:%npm_package_config_version_tag%",
+    "docker-push-prod-from-scratch": "npm run docker-image-build && npm run docker-image-tag && npm run docker-push-prod",
+    "docker-pull-prod": "docker pull %npm_package_config_integration_container_registry%.azurecr.io/%npm_package_name%:%npm_package_config_version_tag%",
+    "docker-image-build": "docker image build -t %npm_package_name%:%npm_package_config_version_tag% .",
+    "docker-image-untag": "docker rmi %npm_package_name%:%npm_package_config_version_tag%",
+    "docker-image-rm": "docker image rm %npm_package_name%:%npm_package_config_version_tag%",
+    "docker-run": "docker run --name %npm_package_name% -d -p 8080:8080 %npm_package_name%:%npm_package_config_version_tag%",
+    "docker-run-prod": "docker run --name %npm_package_name% -d -p 8080:8080 %npm_package_config_integration_container_registry%.azurecr.io/%npm_package_name%:%npm_package_config_version_tag%",
+    "docker-buildrun": "npm run docker-image-build && npm run docker-run",
+    "docker-container-stop": "docker container stop %npm_package_name%",
+    "docker-container-rm": "docker container rm %npm_package_name%",
+    "docker-container-rm-graceful": "npm run docker-container-stop && npm run docker-container-rm",
+    "docker-clean": "npm run docker-container-rm-graceful && npm run docker-image-untag"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "latest",
+    "express": "latest",
+    "http-errors": "latest",
+    "mocha": "latest",
+    "morgan": "latest",
+    "supertest": "latest",
+    "swagger-ui-express": "latest"
+  }
+}
