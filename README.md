@@ -106,6 +106,8 @@ Publish a version 1 and run the following cmd during update
 FOR /L %L IN (0,0,1) DO @(curl http://20.77.128.2/ &  timeout 15 &  echo.)
 ```
 
+To run a load test, try npm run load-test (you'll have to change the ip address in the package.config). This will be usd to test autoscaling
+
 Clean up
 
 ```bash
@@ -115,17 +117,19 @@ az group delete -n NetworkWatcherRG
 
 ## TODO
 
-Cluster scaling
+* Liveness/readiness probes
 
-TLS
+* Cluster scaling
 
-logging/PVs/PVCs - Azure Service monitor
+* TLS
 
-service mesh - Istio
+* logging/PVs/PVCs - Azure Service monitor
 
-Mocking - decide where and how to communicate
+* service mesh - Istio
 
-networking - do this properly
+* Mocking - decide where and how to communicate
 
-RBAC, service principles - do this properly
+* networking - do this properly
+
+* RBAC, service principles - do this properly
 

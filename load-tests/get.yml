@@ -1,0 +1,25 @@
+#https://artillery.io/docs/http-reference
+config:
+  target: 'http://localhost:8080/'
+  phases:
+    - duration: 30
+      arrivalRate: 25
+  payload:
+    path: "postCodes.csv"
+    fields:
+      - "postCode" 
+      #- "updatedProductName"
+    order: sequence
+    skipHeader: true
+  ensure:
+    maxErrorRate: 1
+    p95: 1000
+scenarios:
+  - name: Query
+    weight: 1
+    flow:
+      - get:
+          url: "http://localhost:8080/group/lookups/address-lookup"
+          qs:
+            postcode: "{{ postCode }}"
+      #- log: "Successfully retrieved "

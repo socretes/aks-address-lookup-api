@@ -11,6 +11,7 @@
     "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "az-login": "az login",
+    "loadtest": "artillery run load-tests/get.yml",
     "az-integration-acr-create": "az acr create -g %npm_package_config_integration_resource_group% -n %npm_package_config_integration_container_registry% --sku Basic --location uksouth",
     "az-integration-acr-delete": "az acr delete -g %npm_package_config_integration_resource_group% -n %npm_package_config_integration_container_registry%",
     "docker-image-tag": "docker tag %npm_package_name%:%npm_package_config_version_tag% %npm_package_config_integration_container_registry%.azurecr.io/%npm_package_name%:%npm_package_config_version_tag%",
@@ -38,5 +39,8 @@
     "morgan": "latest",
     "supertest": "latest",
     "swagger-ui-express": "latest"
+  },
+  "devDependencies": {
+    "artillery": "^1.6.1"
   }
 }
