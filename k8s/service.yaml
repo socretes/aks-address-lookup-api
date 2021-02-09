@@ -1,0 +1,14 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: address-lookup-api
+  namespace: #@ data.values.namespace
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: address-lookup-api

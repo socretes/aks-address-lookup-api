@@ -1,0 +1,14 @@
+#@data/values
+---
+
+namespace: group-lookups-uat
+image: rlintegrationservices.azurecr.io/address-lookup-api:v0
+labels:
+  environment: uat
+  version: 0.0.1
+resources:
+  requests:
+    cpu: 250m
+  limits: 
+    cpu: 500m
+

@@ -1,0 +1,10 @@
+#@ load("@ytt:data", "data")
+---
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: address-lookup-configmap
+  namespace: #@ data.values.namespace
+data:
+  ENV: #@ data.values.environment
+  SWAGGER_ENDPOINT: 20.68.185.60

@@ -27,7 +27,13 @@
     "docker-container-stop": "docker container stop %npm_package_name%",
     "docker-container-rm": "docker container rm %npm_package_name%",
     "docker-container-rm-graceful": "npm run docker-container-stop && npm run docker-container-rm",
-    "docker-clean": "npm run docker-container-rm-graceful && npm run docker-image-untag"
+    "docker-clean": "npm run docker-container-rm-graceful && npm run docker-image-untag",
+    "k8s-yaml-namespace-generate-dev": ".\\k8s\\ytt -f k8s/namespace.yaml -f k8s/dev/dev.yml  > namespace.dev.yaml",
+    "k8s-yaml-deployment-generate-dev": ".\\k8s\\ytt -f k8s/deployment.yaml -f k8s/dev/dev.yml  > deployment.dev.yaml",
+    "k8s-yaml-service-generate-dev": ".\\k8s\\ytt -f k8s/service.yaml -f k8s/dev/dev.yml  > service.dev.yaml",
+    "k8s-yaml-configmap-generate-dev": ".\\k8s\\ytt -f k8s/configmap.yaml -f k8s/dev/dev.yml  > configmap.dev.yaml",
+    "k8s-yaml-ingress-generate-dev": ".\\k8s\\ytt -f k8s/ingress.yaml -f k8s/dev/dev.yml  > ingress.dev.yaml",
+    "k8s-yaml-generate-dev": "npm run k8s-yaml-namespace-generate-dev && npm run k8s-yaml-deployment-generate-dev && npm run k8s-yaml-service-generate-dev && npm run k8s-yaml-configmap-generate-dev && npm run k8s-yaml-ingress-generate-dev"
   },
   "author": "",
   "license": "ISC",
@@ -41,6 +47,5 @@
     "swagger-ui-express": "latest"
   },
   "devDependencies": {
-    "artillery": "^1.6.1"
   }
 }

@@ -123,9 +123,9 @@ az group delete -n NetworkWatcherRG
 
 * TLS
 
-* logging/PVs/PVCs - Azure Service monitor
-
 * service mesh - Istio
+
+* logging/PVs/PVCs - Azure Service monitor
 
 * Mocking - decide where and how to communicate
 

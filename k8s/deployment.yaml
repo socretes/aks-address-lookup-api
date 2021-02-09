@@ -1,0 +1,53 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: address-lookup-api
+  namespace: #@ data.values.namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: address-lookup-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: address-lookup-api
+        environment: #@ data.values.environment
+        version: #@ data.values.version
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: address-lookup-api
+        image: #@ data.values.image
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: address-lookup-parameters
+        resources:
+          requests:
+            cpu: #@ data.values.resources.requests.cpu
+          limits:
+            cpu: #@ data.values.resources.limits.cpu
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: address-lookup-api-hpa
+  namespace: #@ data.values.namespace
+spec:
+  maxReplicas: 3
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: address-lookup-api
+  targetCPUUtilizationPercentage: #@ data.values.targetCPUUtilizationPercentage
