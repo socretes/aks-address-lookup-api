@@ -5,7 +5,7 @@
   "config": {
     "integration-resource-group": "rg-integration",
     "integration-container-registry": "rlintegrationservices",
-    "version-tag": "v1"
+    "version-tag": "v0"
   },
   "scripts": {
     "start": "node ./bin/www",
@@ -33,7 +33,14 @@
     "k8s-yaml-service-generate-dev": ".\\k8s\\ytt -f k8s/service.yaml -f k8s/dev/dev.yml  > service.dev.yaml",
     "k8s-yaml-configmap-generate-dev": ".\\k8s\\ytt -f k8s/configmap.yaml -f k8s/dev/dev.yml  > configmap.dev.yaml",
     "k8s-yaml-ingress-generate-dev": ".\\k8s\\ytt -f k8s/ingress.yaml -f k8s/dev/dev.yml  > ingress.dev.yaml",
-    "k8s-yaml-generate-dev": "npm run k8s-yaml-namespace-generate-dev && npm run k8s-yaml-deployment-generate-dev && npm run k8s-yaml-service-generate-dev && npm run k8s-yaml-configmap-generate-dev && npm run k8s-yaml-ingress-generate-dev"
+    "k8s-yaml-generate-dev": "npm run k8s-yaml-namespace-generate-dev && npm run k8s-yaml-deployment-generate-dev && npm run k8s-yaml-service-generate-dev && npm run k8s-yaml-configmap-generate-dev && npm run k8s-yaml-ingress-generate-dev",
+    
+    "k8s-yaml-namespace-generate-prod": ".\\k8s\\ytt -f k8s/namespace.yaml -f k8s/prod/prod.yml  > namespace.prod.yaml",
+    "k8s-yaml-deployment-generate-prod": ".\\k8s\\ytt -f k8s/deployment.yaml -f k8s/prod/prod.yml  > deployment.prod.yaml",
+    "k8s-yaml-service-generate-prod": ".\\k8s\\ytt -f k8s/service.yaml -f k8s/prod/prod.yml  > service.prod.yaml",
+    "k8s-yaml-configmap-generate-prod": ".\\k8s\\ytt -f k8s/configmap.yaml -f k8s/prod/prod.yml  > configmap.prod.yaml",
+    "k8s-yaml-ingress-generate-prod": ".\\k8s\\ytt -f k8s/ingress.yaml -f k8s/prod/prod.yml  > ingress.prod.yaml",
+    "k8s-yaml-generate-prod": "npm run k8s-yaml-namespace-generate-prod && npm run k8s-yaml-deployment-generate-prod && npm run k8s-yaml-service-generate-prod && npm run k8s-yaml-configmap-generate-prod && npm run k8s-yaml-ingress-generate-prod"
   },
   "author": "",
   "license": "ISC",

@@ -1,3 +1,5 @@
+https://vincentlauzon.com/2018/11/28/understanding-multiple-ingress-in-aks/
+
 # aks-address-lookup-api
 
 Address lookup API is a simple nodejs API exposed that allows a lookup of addresses based on a postcode match. It provides instructions for running locally, running on docker and running on a namespace in AKS.
@@ -50,7 +52,7 @@ Tag the image
 npm run docker-image-tag
 ```
 
-## AKS commands
+## AKS commands prerequisites
 
 ```bash
 
@@ -74,30 +76,53 @@ npm run docker-push-prod
 
 az acr repository list --name rlintegrationservices --output table
 
-az aks create --resource-group rg-integrationservices --name sharedintegrationservices --node-count 2 --generate-ssh-keys --attach-acr rlintegrati onservices
+az aks create --resource-group rg-integrationservices --name sharedintegrationservices --node-count 2 --generate-ssh-keys --attach-acr rlintegrationservices
 
 az aks get-credentials --resource-group rg-integrationservices --name sharedintegrationservices
 
-kubectl get namespace
+## AKS commands (dev)
 
-kubectl apply -f namespace.yaml
+npm run k8s-yaml-generate-dev
+
+kubectl apply -f namespace.dev.yaml
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install nginx-ingress ingress-nginx/ingress-nginx --namespace group-lookups --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace group-lookups-dev --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
 
 kubectl --namespace group-lookups get services
 
 kubectl --namespace group-lookups get services -o wide -w nginx-ingress-ingress-nginx-controller
 kubectl get nodes
 
-kubectl apply -f configmap.yaml
-kubectl apply -f deployment.yaml
-kubectl apply -f ingress.yaml
+kubectl apply -f configmap.dev.yaml
+kubectl apply -f deployment.dev.yaml
+kubectl apply -f service.dev.yaml
+kubectl apply -f ingress.dev.yaml
 
-kubectl get pods --namespace group-lookups
-kubectl get service address-lookup-api --watch --namespace group-lookups
-kubectl get ingress group-lookups-ingress --namespace=group-lookups
+## AKS commands (prod) - on same cluster as dev but separated by namespace
+
+npm run k8s-yaml-generate-prod
+
+kubectl apply -f namespace.prod.yaml
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace group-lookups-prod --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+
+kubectl --namespace group-lookups get services
+
+kubectl --namespace group-lookups get services -o wide -w nginx-ingress-ingress-nginx-controller
+kubectl get nodes
+
+kubectl apply -f configmap.prod.yaml
+kubectl apply -f deployment.prod.yaml
+kubectl apply -f service.prod.yaml
+kubectl apply -f ingress.prod.yaml
+
+kubectl get pods --namespace group-lookups-prod
+kubectl get service address-lookup-api --watch --namespace group-lookups-prod
+kubectl get ingress group-lookups-ingress --namespace=group-lookups-prod
 ```
 
 Publish a version 1 and run the following cmd during update

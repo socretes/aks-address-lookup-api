@@ -106,3 +106,8 @@ configmap.dev.yaml
 deployment.dev.yaml
 ingress.dev.yaml
 namespace.dev.yaml
+configmap.prod.yaml
+deployment.prod.yaml
+namespace.prod.yaml
+service.prod.yaml
+ingress.prod.yaml
