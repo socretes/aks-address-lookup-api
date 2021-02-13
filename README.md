@@ -1,4 +1,16 @@
+TODO:
+
+Stub
+Pod commands
+Diagram
+
+Networking
+
+# References
+
 https://vincentlauzon.com/2018/11/28/understanding-multiple-ingress-in-aks/
+
+
 
 # aks-address-lookup-api
 
@@ -80,19 +92,34 @@ az aks create --resource-group rg-integrationservices --name sharedintegrationse
 
 az aks get-credentials --resource-group rg-integrationservices --name sharedintegrationservices
 
+```
+
+Run the following to see the resource group that the VMs are deployed
+
+```bash
+
+az aks show -g rg-integrationservices -n sharedintegrationservices --query nodeResourceGroup -o tsv
+
+az network public-ip list -g MC_rg-integrationservices_sharedintegrationservices_uksouth --query [*].ipAddress
+
+```
+
 ## AKS commands (dev)
 
+```bash
 npm run k8s-yaml-generate-dev
 
 kubectl apply -f namespace.dev.yaml
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install nginx-ingress ingress-nginx/ingress-nginx --namespace group-lookups-dev --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+helm install nginx-ingress-group-lookups-dev ingress-nginx/ingress-nginx --namespace group-lookups-dev --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.ingressClass=group-lookups-dev
 
-kubectl --namespace group-lookups get services
+az network public-ip list -g MC_rg-integrationservices_sharedintegrationservices_uksouth --query [*].ipAddress
 
-kubectl --namespace group-lookups get services -o wide -w nginx-ingress-ingress-nginx-controller
+kubectl --namespace group-lookups-dev get services
+
+kubectl --namespace group-lookups-dev get services -o wide -w nginx-ingress-ingress-nginx-controller
 kubectl get nodes
 
 kubectl apply -f configmap.dev.yaml
@@ -108,11 +135,13 @@ kubectl apply -f namespace.prod.yaml
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install nginx-ingress ingress-nginx/ingress-nginx --namespace group-lookups-prod --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+helm install nginx-ingress-group-lookups-prod ingress-nginx/ingress-nginx --namespace group-lookups-prod --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.ingressClass=group-lookups-prod
 
-kubectl --namespace group-lookups get services
+az network public-ip list -g MC_rg-integrationservices_sharedintegrationservices_uksouth --query [*].ipAddress
 
-kubectl --namespace group-lookups get services -o wide -w nginx-ingress-ingress-nginx-controller
+kubectl --namespace group-lookups-prod get services
+
+kubectl --namespace group-lookups-prod get services -o wide -w nginx-ingress-group-lookups-prod
 kubectl get nodes
 
 kubectl apply -f configmap.prod.yaml
