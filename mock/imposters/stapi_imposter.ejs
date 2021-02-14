@@ -1,0 +1,46 @@
+  {
+    "port": 8090,
+    "protocol": "http",
+    "stubs": [
+      {
+        "predicates": [
+          {
+            "deepEquals": {
+              "method": "GET"
+            }
+          },
+          {
+            "deepEquals": {
+              "path": "/mock/address-lookup-api"
+            }
+          }
+        ],
+        "responses": [
+          {
+            "is": {
+              "statusCode": 200,
+              "headers": {
+                "X-Content-Type-Options": "nosniff",
+                "X-XSS-Protection": "1; mode=block",
+                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
+                "X-Frame-Options": "DENY",
+                "Date": "Sun, 14 Apr 2019 14:44:10 GMT",
+                "Content-Type": "application/json;charset=UTF-8",
+                "Transfer-Encoding": "chunked",
+                "Connection": "close"
+              },
+              "body": "{\"_items\":[{\"addressLine1\": \"1 Castle Street\",\"addressLine2\": \"\",\"addressLine3\": \"\",\"city\": \"Edinburgh\",\"county\": \"\",\"postcode\": \"EH1 1HE\"}]}",
+              "_mode": "text",
+              "_proxyResponseTime": 117
+            },
+            "_behaviors": {
+              "wait": 117
+            }
+          }
+        ]
+      }
+    ]
+  }
+

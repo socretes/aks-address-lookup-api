@@ -45,6 +45,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "debug": "latest",
     "express": "latest",
     "http-errors": "latest",
@@ -53,6 +54,5 @@
     "supertest": "latest",
     "swagger-ui-express": "latest"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

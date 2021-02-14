@@ -1,27 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+const axios = require('axios');
 
-  if (req.query.postcode === "EH1 1HE"){
-    res.send({
-      "_items": [
-        {
-          "addressLine1": "1 Castle Street",
-          "addressLine2": "string",
-          "addressLine3": "string",
-          "city": "Edinburgh",
-          "county": "string",
-          "postcode": "EH1 1HE"
-        }
-      ]
+router.get('/', (req, res) => {
+  axios.get('http://LAPTOP-B68T9PQR:8090/mock/address-lookup-api')
+    .then(response => {
+      res.send(response.data)
+    })
+    .catch(error => {
+      res.error(error);
     });
-  }
-
-  res.send({
-    "_items": []
-  });
-});
+}) 
 
 module.exports = router;
