@@ -37,6 +37,19 @@ spec:
             cpu: #@ data.values.resources.requests.cpu
           limits:
             cpu: #@ data.values.resources.limits.cpu
+      - name: address-lookup-api-mock
+        image: #@ data.values.mockimage
+        args: ["--configfile", "/imposters/imposters.ejs", "--allowInjection"]
+        ports:
+        - containerPort: 8090
+        envFrom:
+          - configMapRef:
+              name: address-lookup-parameters
+        resources:
+          requests:
+            cpu: #@ data.values.resources.requests.cpu
+          limits:
+            cpu: #@ data.values.resources.limits.cpu
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler

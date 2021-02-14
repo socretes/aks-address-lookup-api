@@ -3,6 +3,7 @@
 
 namespace: group-lookups-dev
 image: rlintegrationservices.azurecr.io/address-lookup-api:v0
+mockimage: rlintegrationservices.azurecr.io/address-lookup-api-mock:v0
 environment: dev
 version: 0.0.1
 resources:

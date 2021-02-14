@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
       res.send(response.data)
     })
     .catch(error => {
-      res.error(error);
+      res.status(500).send(`Error retrieving address from '${process.env.ADDRESS_LOOKUP_REMOTE_URL}'`);
     });
 }) 
 

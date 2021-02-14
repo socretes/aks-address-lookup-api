@@ -6,11 +6,10 @@ metadata:
   name: group-lookups-ingress
   namespace: #@ data.values.namespace
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: #@ data.values.namespace
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    kubernetes.io/ingress.class: #@ data.values.namespace
 spec:
   rules:
   - http:

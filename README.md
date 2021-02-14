@@ -1,16 +1,6 @@
-TODO:
-
-Stub
-Pod commands
-Diagram
-
-Networking
-
 # References
 
 https://vincentlauzon.com/2018/11/28/understanding-multiple-ingress-in-aks/
-
-
 
 # aks-address-lookup-api
 
@@ -20,11 +10,20 @@ The package.json provides a few commands to help. These work on Windows
 
 There's also an artillery project coming along that will allow te ability to test scaling
 
+## Mock
+
+```bash
+
+npm run docker-mock-build
+npm run docker-mock-run
+
+```
+
 ## Local machine
 
 ```bash
 npm install
-npm run start
+npm run local
 curl http://localhost:8080
 ```
 
@@ -33,6 +32,7 @@ curl http://localhost:8080
 To run on 8080
 
 ```bash
+
 npm run docker-image-build
 npm run docker-run
 
@@ -62,6 +62,7 @@ Tag the image
 
 ```bash
 npm run docker-image-tag
+npm run docker-mock-tag
 ```
 
 ## AKS commands prerequisites
@@ -85,6 +86,7 @@ az acr repository show --name rlintegrationservices --image address-lookup-api:v
 az acr repository show --name rlintegrationservices --image address-lookup-api:v0
 
 npm run docker-push-prod
+npm run docker-mock-push-prod
 
 az acr repository list --name rlintegrationservices --output table
 
@@ -113,7 +115,7 @@ kubectl apply -f namespace.dev.yaml
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install nginx-ingress-group-lookups-dev ingress-nginx/ingress-nginx --namespace group-lookups-dev --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.ingressClass=group-lookups-dev
+helm install nginx-group-lookups-dev ingress-nginx/ingress-nginx --namespace group-lookups-dev --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.ingressClass=group-lookups-dev
 
 az network public-ip list -g MC_rg-integrationservices_sharedintegrationservices_uksouth --query [*].ipAddress
 
@@ -127,6 +129,14 @@ kubectl apply -f deployment.dev.yaml
 kubectl apply -f service.dev.yaml
 kubectl apply -f ingress.dev.yaml
 
+kubectl get pods --namespace group-lookups-dev
+kubectl get service address-lookup-api --watch --namespace group-lookups-prod
+kubectl get ingress group-lookups-ingress --namespace=group-lookups-prod
+
+kubectl get events --watch
+kubectl exec -it thispod --container address-lookup-api-mock --/bin/ash
+kubectl port-forward address-lookup-api-78fdc459f-44mrt 8080:8080
+
 ## AKS commands (prod) - on same cluster as dev but separated by namespace
 
 npm run k8s-yaml-generate-prod
@@ -135,7 +145,7 @@ kubectl apply -f namespace.prod.yaml
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install nginx-ingress-group-lookups-prod ingress-nginx/ingress-nginx --namespace group-lookups-prod --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.ingressClass=group-lookups-prod
+helm install nginx-group-lookups-prod ingress-nginx/ingress-nginx --namespace group-lookups-prod --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.ingressClass=group-lookups-prod
 
 az network public-ip list -g MC_rg-integrationservices_sharedintegrationservices_uksouth --query [*].ipAddress
 
@@ -152,6 +162,16 @@ kubectl apply -f ingress.prod.yaml
 kubectl get pods --namespace group-lookups-prod
 kubectl get service address-lookup-api --watch --namespace group-lookups-prod
 kubectl get ingress group-lookups-ingress --namespace=group-lookups-prod
+
+kubectl get events --watch
+kubectl exec -it thispod --container address-lookup-api-mock --/bin/ash
+kubectl port-forward address-lookup-api-c8c57f855-k2bhg 8090:8090
+
+
+
+>ls -l
+
+
 ```
 
 Publish a version 1 and run the following cmd during update
