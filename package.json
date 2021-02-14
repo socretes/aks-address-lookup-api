@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
+    "local": "node -r dotenv/config ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "az-login": "az login",
     "loadtest": "artillery run load-tests/get.yml",
@@ -34,7 +35,6 @@
     "k8s-yaml-configmap-generate-dev": ".\\k8s\\ytt -f k8s/configmap.yaml -f k8s/dev/dev.yml  > configmap.dev.yaml",
     "k8s-yaml-ingress-generate-dev": ".\\k8s\\ytt -f k8s/ingress.yaml -f k8s/dev/dev.yml  > ingress.dev.yaml",
     "k8s-yaml-generate-dev": "npm run k8s-yaml-namespace-generate-dev && npm run k8s-yaml-deployment-generate-dev && npm run k8s-yaml-service-generate-dev && npm run k8s-yaml-configmap-generate-dev && npm run k8s-yaml-ingress-generate-dev",
-    
     "k8s-yaml-namespace-generate-prod": ".\\k8s\\ytt -f k8s/namespace.yaml -f k8s/prod/prod.yml  > namespace.prod.yaml",
     "k8s-yaml-deployment-generate-prod": ".\\k8s\\ytt -f k8s/deployment.yaml -f k8s/prod/prod.yml  > deployment.prod.yaml",
     "k8s-yaml-service-generate-prod": ".\\k8s\\ytt -f k8s/service.yaml -f k8s/prod/prod.yml  > service.prod.yaml",
@@ -54,5 +54,7 @@
     "supertest": "latest",
     "swagger-ui-express": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
 }

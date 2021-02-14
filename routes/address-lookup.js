@@ -4,7 +4,7 @@ var router = express.Router();
 const axios = require('axios');
 
 router.get('/', (req, res) => {
-  axios.get('http://LAPTOP-B68T9PQR:8090/mock/address-lookup-api')
+  axios.get(process.env.ADDRESS_LOOKUP_REMOTE_URL)
     .then(response => {
       res.send(response.data)
     })
