@@ -2,30 +2,11 @@
 
 Address lookup API is a simple nodejs API exposed that allows a lookup of addresses based on a postcode match. It provides instructions for running locally, running on docker and running on a namespace in AKS.
 
+![Screenshot](container%20address%20lookup.png)
+
 The package.json provides a few commands to help. These work on Windows 
 
 There's also an artillery project coming along that will allow te ability to test scaling
-
-It's much simpler than that.
-Just upload your image to the repository root, and link to the filename without any path, like so:
-
-![Screenshot](container%20address%20lookup.png)
-
-## TODO
-
-* networking - do this properly
-
-* TLS
-
-* logging/PVs/PVCs - Azure Service monitor
-
-* service mesh - Istio
-
-* Cluster scaling
-
-* DR
-
-* RBAC, service principles, auth - do this properly
 
 # References
 
@@ -246,6 +227,22 @@ httpget - executes a check against a url and looks at returns code of 2* or 3*
 kubectl get events --watch #run this to see what happens when we 
 
 
+
+## Still TODO
+
+* networking - do this properly
+
+* TLS
+
+* logging/PVs/PVCs - Azure Service monitor
+
+* service mesh - Istio
+
+* Cluster scaling
+
+* DR
+
+* RBAC, service principles, auth - do this properly
 
 
 
