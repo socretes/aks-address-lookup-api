@@ -6,6 +6,11 @@ The package.json provides a few commands to help. These work on Windows
 
 There's also an artillery project coming along that will allow te ability to test scaling
 
+It's much simpler than that.
+Just upload your image to the repository root, and link to the filename without any path, like so:
+
+![Screenshot](container%20address%20lookup.png)
+
 ## TODO
 
 * networking - do this properly
