@@ -1,8 +1,0 @@
-kind: ConfigMap 
-apiVersion: v1 
-metadata:
-  name: address-lookup-parameters
-  namespace: group-lookups
-data:
-  MESSAGE: hello
-  SWAGGER_ENDPOINT: 20.68.185.60
