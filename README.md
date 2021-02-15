@@ -1,7 +1,3 @@
-# References
-
-https://vincentlauzon.com/2018/11/28/understanding-multiple-ingress-in-aks/
-
 # aks-address-lookup-api
 
 Address lookup API is a simple nodejs API exposed that allows a lookup of addresses based on a postcode match. It provides instructions for running locally, running on docker and running on a namespace in AKS.
@@ -9,6 +5,26 @@ Address lookup API is a simple nodejs API exposed that allows a lookup of addres
 The package.json provides a few commands to help. These work on Windows 
 
 There's also an artillery project coming along that will allow te ability to test scaling
+
+## TODO
+
+* networking - do this properly
+
+* TLS
+
+* logging/PVs/PVCs - Azure Service monitor
+
+* service mesh - Istio
+
+* Cluster scaling
+
+* DR
+
+* RBAC, service principles, auth - do this properly
+
+# References
+
+https://vincentlauzon.com/2018/11/28/understanding-multiple-ingress-in-aks/
 
 ## Mock
 
@@ -130,8 +146,11 @@ kubectl apply -f service.dev.yaml
 kubectl apply -f ingress.dev.yaml
 
 kubectl get pods --namespace group-lookups-dev
+kubextl describe pod MY_POD
 kubectl get service address-lookup-api --watch --namespace group-lookups-prod
 kubectl get ingress group-lookups-ingress --namespace=group-lookups-prod
+
+kubectl exec -it MY_POD --usr/bin/lillall my_app
 
 kubectl get events --watch
 kubectl exec -it thispod --container address-lookup-api-mock --/bin/ash
@@ -189,21 +208,42 @@ az group delete -n rg-integrationservices
 az group delete -n NetworkWatcherRG
 ```
 
-## TODO
-
 * Liveness/readiness probes
 
-* Cluster scaling
+Decided to go TCP
+Might want to change the default timeouts for readiness in BW
+Might want to look at cmd or HTTP if any issues
 
-* TLS
+Runs a diagnostc check on the container
 
-* service mesh - Istio
+Per container setting
 
-* logging/PVs/PVCs - Azure Service monitor
+ON filure the kublet will restart the container according to the container restart policy
 
-* Mocking - decide where and how to communicate
+GIves K8s a better understanding of our application
 
-* networking - do this properly
+* Readiness probes
 
-* RBAC, service principles - do this properly
+Run diagnostic checks agianst the containers in the pod
+
+Per container setting
+
+On start up, the ontainer won't receive trafic until ready (ie. readiness probe reports success)
+
+Useful for applications that have a long start up time
+
+Types of diagnostics checks (looks for success, failure or unknown)
+
+EXec - measures the process exit code - ie exec something and look at exit code
+tcp socket - check whether we can successfully open  port
+httpget - executes a check against a url and looks at returns code of 2* or 3*
+
+kubectl get events --watch #run this to see what happens when we 
+
+
+
+
+
+
+
 

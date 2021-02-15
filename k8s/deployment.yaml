@@ -32,6 +32,16 @@ spec:
         envFrom:
           - configMapRef:
               name: address-lookup-parameters
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
         resources:
           requests:
             cpu: #@ data.values.resources.requests.cpu
