@@ -221,14 +221,16 @@ FOR /L %L IN (0,0,1) DO @(curl http://20.77.128.2/ &  timeout 15 &  echo.)
 
 To run a load test, try npm run load-test (you'll have to change the ip address in the package.config). This will be usd to test autoscaling
 
-Clean up
+# Clean up
 
 ```bash
 az group delete -n rg-integrationservices
 az group delete -n NetworkWatcherRG
 ```
 
-* Liveness/readiness probes
+# Liveness/readiness probes
+
+*Liveness
 
 Decided to go TCP
 Might want to change the default timeouts for readiness in BW
