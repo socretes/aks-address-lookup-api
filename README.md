@@ -1,4 +1,34 @@
+# doc
+
+The API Management service can be configured in a Virtual Network in internal mode, which makes it accessible only from within the Virtual Network. Azure Application Gateway is a PAAS Service, which provides a Layer-7 load balancer. It acts as a reverse-proxy service and provides among its offering a Web Application Firewall (WAF).
+
+https://docs.microsoft.com/en-us/azure/key-vault/general/best-practices
+
+
+https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-integrate-internal-vnet-appgateway
+
+https://docs.microsoft.com/en-us/azure/api-management/api-management-kubernetes
+
+https://docs.microsoft.com/en-us/azure/aks/control-kubeconfig-access
+
+https://docs.microsoft.com/en-us/azure/aks/availability-zones
+
+https://docs.microsoft.com/en-us/azure/aks/operator-best-practices
+
+https://docs.microsoft.com/en-us/azure/aks/developer-best-practices-resource-management-multi-region
+
+The Kubernetes API server is how the underlying Kubernetes APIs are exposed. This component provides the interaction for management tools, such as kubectl or the Kubernetes dashboard. AKS provides a single-tenant cluster control plane, with a dedicated API server. By default, the API server is assigned a public IP address, and you should control access using Kubernetes role-based access control (Kubernetes RBAC) or Azure RBAC.
+
+To secure access to the otherwise publicly accessible AKS control plane / API server, you can enable and use authorized IP ranges. These authorized IP ranges only allow defined IP address ranges to communicate with the API server. A request made to the API server from an IP address that isn't part of these authorized IP ranges is blocked. Continue to use Kubernetes RBAC or Azure RBAC to authorize users and the actions they request.
+
+
+
 # aks-address-lookup-api
+
+https://docs.microsoft.com/en-us/azure/aks/private-clusters
+https://github.com/paolosalvatori/private-aks-cluster
+
+
 
 Address lookup API is a simple nodejs API exposed that allows a lookup of addresses based on a postcode match. It provides instructions for running locally, running on docker and running on a namespace in AKS.
 
@@ -11,12 +41,12 @@ There's also an artillery project coming along that will allow te ability to tes
 # References
 
 https://vincentlauzon.com/2018/11/28/understanding-multiple-ingress-in-aks/
-
+ 
 ## Mock
 
 ```bash
 
-npm run docker-mock-build
+npm run docker-mock-build5
 npm run docker-mock-run
 
 ```
@@ -92,9 +122,13 @@ npm run docker-mock-push-prod
 
 az acr repository list --name rlintegrationservices --output table
 
-az aks create --resource-group rg-integrationservices --name sharedintegrationservices --node-count 2 --generate-ssh-keys --attach-acr rlintegrationservices
+az aks create --resource-group rg-integrationservices --name sharedintegrationservices --node-count 1 --generate-ssh-keys --attach-acr rlintegrationservices --api-server-authorized-ip-ranges 172.17.186.81/24
 
 az aks get-credentials --resource-group rg-integrationservices --name sharedintegrationservices
+
+az network public-ip show --resource-group MC_rg-integrationservices_sharedintegrationservices_uksouth --name 44890522-77ce-45bd-906a-a37c93261c59 --query id -o tsv
+
+az aks browse --resource-group rg-integrationservices --name sharedintegrationservices
 
 ```
 

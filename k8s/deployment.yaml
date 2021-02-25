@@ -60,6 +60,13 @@ spec:
             cpu: #@ data.values.resources.requests.cpu
           limits:
             cpu: #@ data.values.resources.limits.cpu
+      volumeMounts:
+      - mountPath: "/mnt/address-lookup-api"
+        name: logs
+    volumes:
+      - name: logs
+        persistentVolumeClaim:
+          claimName: application-logs
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
